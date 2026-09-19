@@ -1,1 +1,389 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>50 AI Prompts for Business Productivity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --ink: #1C2B33;
+    --paper: #ECEFEA;
+    --card: #DEE3DA;
+    --accent: #C99A2E;
+    --teal: #2F6E63;
+    --muted: #5B6864;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    line-height: 1.6;
+    font-size: 17px;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.4em;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 500;
+  }
+
+  a { color: var(--teal); }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header.site {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  header.site .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  header.site .logo span { color: var(--accent); }
+
+  .btn {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 13px 24px;
+    border-radius: 3px;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    background: transparent;
+    transition: transform .15s ease, background .15s ease, color .15s ease;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .btn:focus-visible, a:focus-visible, input:focus-visible, button:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 2px;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn-primary:hover { background: var(--teal); border-color: var(--teal); transform: translateY(-1px); }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  .hero { padding: 48px 0 72px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .lead { font-size: 1.15rem; color: var(--muted); max-width: 34em; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  .prompt-card {
+    background: #1C2B33;
+    color: #A9B3AE;
+    border-radius: 10px;
+    padding: 22px 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    box-shadow: 0 18px 40px rgba(28,43,51,.18);
+  }
+  .prompt-card .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    border: 1px solid rgba(201,154,46,.45);
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+  .dot-row { display: flex; gap: 6px; margin-bottom: 14px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #3A4A52; }
+  .cursor { display: inline-block; width: 8px; height: 1.05em; background: var(--accent); vertical-align: text-bottom; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .problem { padding: 0 0 56px; }
+  .problem-box {
+    background: var(--card);
+    border-left: 4px solid var(--accent);
+    padding: 28px 32px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .section-title { font-size: 1.85rem; margin-bottom: 8px; }
+  .section-sub { color: var(--muted); margin: 0 0 28px; max-width: 36em; }
+
+  .drawers-section { padding: 0 0 64px; }
+  .drawers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .drawer {
+    background: #fff;
+    border: 1px solid #c9d0c8;
+    border-radius: 6px;
+    padding: 18px 16px;
+  }
+  .drawer .count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .drawer h3 { font-size: 1rem; margin-bottom: 6px; }
+  .drawer p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+
+  .how { padding: 0 0 64px; }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .step {
+    background: #fff;
+    border-radius: 6px;
+    padding: 20px 18px;
+    border: 1px solid #c9d0c8;
+  }
+  .step .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .step h3 { font-size: 1.05rem; }
+  .step p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+  .capture-section { padding: 0 0 64px; }
+  .capture {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .signup { display: flex; flex-wrap: wrap; gap: 10px; }
+  .signup input {
+    flex: 1;
+    min-width: 180px;
+    padding: 12px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  #pricing { padding: 0 0 64px; }
+  .price-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 10px;
+    padding: 32px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .price-card ul { margin: 12px 0 0; padding-left: 1.1em; color: #A9B3AE; }
+  .price-card .price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+  }
+  .price-card .price small { font-size: 0.9rem; font-weight: 500; opacity: .7; }
+  .price-card .buy-col { text-align: right; }
+
+  .faq { padding: 0 0 72px; }
+  .faq-item {
+    border-bottom: 1px solid #c9d0c8;
+    padding: 18px 0;
+  }
+  .faq-item h3 { font-size: 1.05rem; margin-bottom: 6px; }
+  .faq-item p { margin: 0; color: var(--muted); }
+
+  footer {
+    border-top: 1px solid #c9d0c8;
+    padding: 28px 24px 48px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 860px) {
+    .hero-grid, .drawers, .steps, .capture { grid-template-columns: 1fr; }
+    .price-card .buy-col { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="logo">Prompt<span>Drawer</span></div>
+  <a href="#pricing" class="btn btn-ghost" style="font-size:0.85rem; padding:9px 16px;">Get the toolkit</a>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">AI Prompt Toolkit · For Solo & Small Businesses</p>
+        <h1>Stop opening a blank chat window every time you need help running your business.</h1>
+        <p class="lead">50 ready-to-use AI prompts for the planning, marketing, sales, and admin work that eats a solo owner's week — built to paste into any AI chat and customize in seconds.</p>
+        <div class="hero-ctas">
+          <a href="#capture" class="btn btn-primary">Get 8 free prompts</a>
+          <a href="#pricing" class="btn btn-ghost">See the full pack — $19</a>
+        </div>
+      </div>
+      <div class="prompt-card" aria-hidden="true">
+        <div class="dot-row"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <span class="tag">SALES & COMMUNICATION</span>
+        <p style="margin:0; color:#A9B3AE;">> Write a follow-up email to a prospect<br>&nbsp;&nbsp;who went quiet after our call. Keep it<br>&nbsp;&nbsp;short, no pressure, one clear next step<span class="cursor"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem">
+    <div class="problem-box">
+      <p class="eyebrow" style="color:var(--accent);">The problem</p>
+      <p style="font-size:1.1rem; margin:0;">Running a business alone means being the marketer, the salesperson, the ops manager, and the bookkeeper — usually with no time to do any of it well. Generic AI prompts you find online are vague and need heavy rewriting before they're useful.</p>
+    </div>
+  </section>
+
+  <section class="drawers-section">
+    <h2 class="section-title">8 drawers, 50 prompts</h2>
+    <p class="section-sub">Organized by the actual jobs a solo business owner has to do — not a random grab-bag list.</p>
+    <div class="drawers">
+      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Business Planning & Strategy</h3><p>Growth opportunities, trade-off decisions, SWOT.</p></div>
+      <div class="drawer"><span class="count">7 PROMPTS</span><h3>Marketing & Content</h3><p>Headlines, About pages, ad variations, blog ideas.</p></div>
+      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Sales & Customer Communication</h3><p>Follow-ups, proposals, objection handling.</p></div>
+      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Operations & Admin</h3><p>SOPs, checklists, hiring notes, meeting agendas.</p></div>
+      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Finance Basics & Pricing</h3><p>Pricing models, budgets, break-even estimates.</p></div>
+      <div class="drawer"><span class="count">7 PROMPTS</span><h3>Customer Support</h3><p>Replies, refund scripts, FAQ drafts.</p></div>
+      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Product & Offers</h3><p>Offer names, feature lists, upgrade paths.</p></div>
+      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Mindset & Focus</h3><p>Weekly reviews, priority filters, decision frames.</p></div>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2 class="section-title">How it works</h2>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><h3>Pick a prompt</h3><p>Open the category that matches the job in front of you.</p></div>
+      <div class="step"><span class="num">2</span><h3>Open any AI chat</h3><p>Works with ChatGPT, Claude, Gemini, or anything else.</p></div>
+      <div class="step"><span class="num">3</span><h3>Paste & fill in the brackets</h3><p>Swap in your specifics — takes seconds.</p></div>
+      <div class="step"><span class="num">4</span><h3>Use what comes back</h3><p>Edit to your voice, then ship it.</p></div>
+    </div>
+  </section>
+
+  <section id="capture" class="capture-section">
+    <div class="capture">
+      <div>
+        <p class="eyebrow">Free sample</p>
+        <h2 style="font-size:1.5rem;">8 of the 50 prompts, free</h2>
+        <p style="color:var(--muted); margin:6px 0 0;">Get a working sample sent to your inbox — no obligation to buy the rest.</p>
+      </div>
+      <form class="signup" id="fig-capture" novalidate><input type="email" name="email" id="fig-email" placeholder="you@business.com" required aria-label="Email address"><button type="submit" class="btn btn-primary">Send them to me</button><p id="fig-msg" role="status" aria-live="polite" style="margin:10px 0 0;font-size:.9rem;min-height:1.2em;"></p></form>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2 class="section-title">Get the full pack</h2>
+    <div class="price-card">
+      <div>
+        <h3 style="color:var(--paper); font-size:1.2rem;">50 AI Prompts for Business Productivity</h3>
+        <ul>
+          <li>All 8 categories, 50 total prompts</li>
+          <li>Works with any AI chat tool</li>
+          <li>Lifetime access to future updates</li>
+        </ul>
+      </div>
+      <div class="buy-col">
+        <div class="price">$19 <small>one-time</small></div>
+        <br>
+        <!-- Stripe payment link -->
+        <a href="https://buy.stripe.com/cNi8wRbpy6M3cqbcRH0gw0c" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:10px;">Buy the pack &mdash; $19</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <h2 class="section-title">Questions</h2>
+    <div class="faq-item"><h3>Do I need a specific AI tool?</h3><p>No — every prompt works with ChatGPT, Claude, Gemini, or any chatbot that takes text input.</p></div>
+    <div class="faq-item"><h3>Is this a subscription?</h3><p>No. One-time payment, yours to keep.</p></div>
+    <div class="faq-item"><h3>How do I get the prompts after buying?</h3><p>You'll receive them by email right after payment. Contact longsholdingsllc@gmail.com if anything is missing.</p></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">PromptDrawer · Long's Holdings LLC · <a href="mailto:longsholdingsllc@gmail.com">longsholdingsllc@gmail.com</a></div>
+</footer>
+
+<script>
+(function () {
+  var SUPA = 'https://placeholder.supabase.co';
+  var KEY = 'placeholder';
+  var f = document.getElementById('fig-capture');
+  var msg = document.getElementById('fig-msg');
+  if (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var em = document.getElementById('fig-email').value.trim();
+      if (!em || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {
+        msg.style.color = '#b3261e'; msg.textContent = 'Please enter a valid email.'; return;
+      }
+      msg.style.color = ''; msg.textContent = 'Sending...';
+      fetch(SUPA + '/rest/v1/leads', {
+        method: 'POST',
+        headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY,
+                   'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ email: em, source: 'ai-prompts-landing' })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        msg.style.color = '#1a7f37';
+        msg.textContent = 'Done - check your inbox for the 8 free prompts.';
+        f.reset();
+        if (window.posthog) window.posthog.capture('lead_captured', { source: 'ai-prompts-landing' });
+      }).catch(function () {
+        msg.style.color = '#b3261e';
+        msg.textContent = 'Something went wrong. Email longsholdingsllc@gmail.com and I will send them directly.';
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

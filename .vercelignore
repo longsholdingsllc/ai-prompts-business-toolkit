@@ -1,0 +1,18 @@
+# Files that must never be served as static files on the deployed site.
+#
+# The two buyer files (promptdrawer.md, promptdrawer.html), the prompt sources in
+# prompts/, the tooling and the internal docs are kept out of the deployment, so
+# there is no public URL that hands the product over. The pack reaches a buyer
+# only through api/download.js, which carries its own compiled copy of both files
+# (see tools/build_pack.py) and refuses to serve a byte of them unless Stripe
+# reports the checkout session as paid.
+#
+# vercel.json repeats this protection at the routing layer with explicit 404s, so
+# the two mechanisms cover for each other. Do not remove either one.
+promptdrawer.md
+promptdrawer.html
+prompts/
+tools/
+docs/
+tests/
+README.md

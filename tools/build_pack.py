@@ -9,10 +9,19 @@ them, validates them, and writes the two files a buyer receives:
     promptdrawer.md     - the whole pack as one Markdown file
     promptdrawer.html   - a self-contained, print-ready HTML file
 
-Both outputs are generated. Never edit ``promptdrawer.md`` or
-``promptdrawer.html`` by hand: edit ``prompts/*.md`` and re-run
+It then compiles both files into the fulfilment function (``api/download.js``)
+between that file's GENERATED markers, because the function is the only thing
+allowed to hand the pack to a buyer. The buyer files are kept out of the static
+deployment, so no public URL serves them; if the function did not carry its own
+copy of the pack it would have nothing to serve. One source, three outputs.
+
+Everything written by this script is generated. Never edit ``promptdrawer.md``,
+``promptdrawer.html`` or the generated block in ``api/download.js`` by hand:
+edit ``prompts/*.md`` and re-run
 
     python3 tools/build_pack.py
+
+``--check`` fails if any of the three is out of date.
 
 The script uses only the Python standard library, so it runs anywhere with
 Python 3.8+ and no install step.
@@ -47,6 +56,7 @@ A broken source file fails the build rather than shipping a half-full pack.
 from __future__ import annotations
 
 import html
+import json
 import re
 import sys
 from pathlib import Path
@@ -55,6 +65,14 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "prompts"
 OUT_MD = ROOT / "promptdrawer.md"
 OUT_HTML = ROOT / "promptdrawer.html"
+# The fulfilment function carries the pack. Its pack block is generated here and
+# is never hand-edited: see build_fulfilment_block().
+FULFILMENT = ROOT / "api" / "download.js"
+BLOCK_BEGIN = "// BEGIN GENERATED: pack-files (written by tools/build_pack.py)"
+BLOCK_END = "// END GENERATED: pack-files"
+BLOCK_RE = re.compile(
+    re.escape(BLOCK_BEGIN) + r"(?P<body>.*?)" + re.escape(BLOCK_END), re.S
+)
 
 PACK_TITLE = "PromptDrawer"
 PACK_SUBTITLE = "50 AI prompts for solo and small-business operators"
@@ -507,6 +525,54 @@ def build_html(categories: list) -> str:
     )
 
 
+def build_fulfilment_block(markdown: str, webpage: str) -> str:
+    """The generated block inside api/download.js, holding both buyer files.
+
+    ``json.dumps`` writes the bodies, so any quote, backslash, newline or
+    non-ASCII character in the pack survives as valid JavaScript without
+    hand-written escaping. Bump PACK_VERSION/PACK_DATE in the sources and this
+    block follows on the next build, like the other two outputs.
+    """
+    return (
+        BLOCK_BEGIN + "\n"
+        "const PACK_FILES = {\n"
+        "  md: {\n"
+        '    name: "promptdrawer.md",\n'
+        '    contentType: "text/markdown; charset=utf-8",\n'
+        "    body: " + json.dumps(markdown, ensure_ascii=True) + ",\n"
+        "  },\n"
+        "  html: {\n"
+        '    name: "promptdrawer.html",\n'
+        '    contentType: "text/html; charset=utf-8",\n'
+        "    body: " + json.dumps(webpage, ensure_ascii=True) + ",\n"
+        "  },\n"
+        "};\n"
+        + BLOCK_END
+    )
+
+
+def read_fulfilment(source: str) -> str:
+    """The generated block currently in api/download.js, markers included."""
+    matches = BLOCK_RE.findall(source)
+    if len(matches) != 1:
+        raise SourceError(
+            f"{FULFILMENT.relative_to(ROOT)} must contain exactly one "
+            f"'{BLOCK_BEGIN}' / '{BLOCK_END}' pair (found {len(matches)})"
+        )
+    return BLOCK_RE.search(source).group(0)
+
+
+def write_fulfilment(block: str) -> None:
+    """Replace the generated block in api/download.js, leaving the rest alone."""
+    source = FULFILMENT.read_text(encoding="utf-8") if FULFILMENT.exists() else ""
+    if not BLOCK_RE.search(source):
+        raise SourceError(
+            f"{FULFILMENT.relative_to(ROOT)} has no '{BLOCK_BEGIN}' / '{BLOCK_END}' "
+            "pair to fill in"
+        )
+    FULFILMENT.write_text(BLOCK_RE.sub(lambda _m: block, source, count=1), encoding="utf-8")
+
+
 def main() -> int:
     check_only = "--check" in sys.argv[1:]
     try:
@@ -518,6 +584,7 @@ def main() -> int:
     total = sum(len(c["prompts"]) for c in categories)
     markdown = build_markdown(categories)
     webpage = build_html(categories)
+    block = build_fulfilment_block(markdown, webpage)
 
     if check_only:
         stale = [
@@ -525,18 +592,32 @@ def main() -> int:
             for path, fresh in ((OUT_MD, markdown), (OUT_HTML, webpage))
             if not path.exists() or path.read_text(encoding="utf-8") != fresh
         ]
+        try:
+            current = read_fulfilment(FULFILMENT.read_text(encoding="utf-8"))
+        except (SourceError, OSError) as error:
+            print(f"OUT OF DATE: api/download.js - {error}", file=sys.stderr)
+            return 1
+        if current != block:
+            stale.append(f"{FULFILMENT.relative_to(ROOT)} (generated pack block)")
         if stale:
             print(
                 f"OUT OF DATE: {', '.join(stale)} - re-run python3 tools/build_pack.py",
                 file=sys.stderr,
             )
             return 1
-        print(f"Up to date: {total} prompts, {len(categories)} categories, both files match the sources")
+        print(
+            f"Up to date: {total} prompts, {len(categories)} categories; both buyer files "
+            f"and the pack block in {FULFILMENT.relative_to(ROOT)} match the sources"
+        )
         return 0
 
     OUT_MD.write_text(markdown, encoding="utf-8")
     OUT_HTML.write_text(webpage, encoding="utf-8")
-    print(f"Built {OUT_MD.name} and {OUT_HTML.name}: {total} prompts, {len(categories)} categories")
+    write_fulfilment(block)
+    print(
+        f"Built {OUT_MD.name}, {OUT_HTML.name} and the pack block in "
+        f"{FULFILMENT.relative_to(ROOT)}: {total} prompts, {len(categories)} categories"
+    )
     for category in categories:
         print(f"  {len(category['prompts']):>2}  {category['category']}")
     return 0

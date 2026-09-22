@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "routes": [
+    { "src": "^/download/?$", "dest": "/api/download" },
+    { "src": "^/promptdrawer\\.md$", "status": 404 },
+    { "src": "^/promptdrawer\\.html$", "status": 404 },
+    { "src": "^/prompts(/.*)?$", "status": 404 },
+    { "src": "^/tools(/.*)?$", "status": 404 },
+    { "src": "^/docs(/.*)?$", "status": 404 },
+    { "src": "^/tests(/.*)?$", "status": 404 },
+    { "src": "^/README\\.md$", "status": 404 },
+    { "src": "^/vercel\\.json$", "status": 404 },
+    { "handle": "filesystem" }
+  ]
+}

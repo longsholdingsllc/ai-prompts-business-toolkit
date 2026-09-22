@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>50 AI Prompts for Business Productivity</title>
+<title>PromptDrawer - AI prompts for solo and small-business operators</title>
+<meta name="description" content="PromptDrawer is a finished pack of ready-to-use AI prompts for solo and small-business operators. Checkout is not open yet, so nothing here is for sale.">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
@@ -46,6 +47,11 @@
   }
 
   a { color: var(--teal); }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88em;
+  }
 
   .wrap {
     max-width: 1080px;
@@ -109,13 +115,13 @@
     border-radius: 10px;
     padding: 22px 24px;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.92rem;
+    font-size: 0.86rem;
     line-height: 1.55;
     box-shadow: 0 18px 40px rgba(28,43,51,.18);
   }
   .prompt-card .tag {
     display: inline-block;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     letter-spacing: 0.08em;
     color: var(--accent);
     border: 1px solid rgba(201,154,46,.45);
@@ -123,10 +129,23 @@
     border-radius: 3px;
     margin-bottom: 14px;
   }
+  .prompt-card .prompt-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--paper);
+    margin: 0 0 10px;
+  }
+  .prompt-card .prompt-text { margin: 0; color: #C4CDC8; }
+  .prompt-card .prompt-note {
+    margin: 14px 0 0;
+    font-size: 0.74rem;
+    color: #7E8C87;
+    border-top: 1px solid #33424A;
+    padding-top: 12px;
+  }
   .dot-row { display: flex; gap: 6px; margin-bottom: 14px; }
   .dot { width: 9px; height: 9px; border-radius: 50%; background: #3A4A52; }
-  .cursor { display: inline-block; width: 8px; height: 1.05em; background: var(--accent); vertical-align: text-bottom; animation: blink 1s step-end infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
 
   .problem { padding: 0 0 56px; }
   .problem-box {
@@ -151,7 +170,8 @@
     border-radius: 6px;
     padding: 18px 16px;
   }
-  .drawer .count {
+  .drawer .count,
+  .contents-cat .count {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.72rem;
     letter-spacing: 0.06em;
@@ -185,28 +205,39 @@
   .step h3 { font-size: 1.05rem; }
   .step p { margin: 0; color: var(--muted); font-size: 0.95rem; }
 
-  .capture-section { padding: 0 0 64px; }
-  .capture {
-    background: var(--card);
-    border-radius: 8px;
-    padding: 28px 32px;
+  .contents-section { padding: 0 0 64px; }
+  .contents-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
-  .signup { display: flex; flex-wrap: wrap; gap: 10px; }
-  .signup input {
-    flex: 1;
-    min-width: 180px;
-    padding: 12px 14px;
-    border: 2px solid var(--ink);
-    border-radius: 3px;
-    font-size: 1rem;
-    font-family: inherit;
+  .contents-cat {
+    background: #fff;
+    border: 1px solid #c9d0c8;
+    border-radius: 6px;
+    padding: 20px 22px;
+  }
+  .contents-cat .count { margin-bottom: 4px; }
+  .contents-cat h3 { font-size: 1.05rem; margin-bottom: 12px; }
+  .contents-list { margin: 0; padding: 0; list-style: none; }
+  .contents-list li {
+    font-size: 0.94rem;
+    color: var(--muted);
+    padding: 5px 0;
+    border-top: 1px solid #e6e9e4;
+    display: flex;
+    gap: 10px;
+  }
+  .contents-list li:first-child { border-top: 0; }
+  .contents-list .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    min-width: 20px;
+    padding-top: 3px;
   }
 
-  #pricing { padding: 0 0 64px; }
+  #availability { padding: 0 0 64px; }
   .price-card {
     background: var(--ink);
     color: var(--paper);
@@ -214,18 +245,38 @@
     padding: 32px 36px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 24px;
+    align-items: flex-start;
+    gap: 32px;
     flex-wrap: wrap;
   }
-  .price-card ul { margin: 12px 0 0; padding-left: 1.1em; color: #A9B3AE; }
+  .price-card ul { margin: 12px 0 0; padding-left: 1.1em; color: #A9B3AE; max-width: 34em; }
+  .price-card li { margin-bottom: 6px; }
+  .price-card { position: relative; }
+  .price-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
   .price-card .price {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 2.4rem;
     font-weight: 700;
   }
-  .price-card .price small { font-size: 0.9rem; font-weight: 500; opacity: .7; }
+  .price-card .price small { font-size: 0.85rem; font-weight: 500; opacity: .75; display: block; }
   .price-card .buy-col { text-align: right; }
+  .sale-state {
+    flex-basis: 100%;
+    margin: 4px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid #33424A;
+    color: #A9B3AE;
+    font-size: 0.98rem;
+    max-width: 62em;
+  }
+  .sale-state strong { color: var(--paper); }
 
   .faq { padding: 0 0 72px; }
   .faq-item {
@@ -244,7 +295,7 @@
   }
 
   @media (max-width: 860px) {
-    .hero-grid, .drawers, .steps, .capture { grid-template-columns: 1fr; }
+    .hero-grid, .drawers, .steps, .contents-grid { grid-template-columns: 1fr; }
     .price-card .buy-col { text-align: left; }
   }
 </style>
@@ -252,7 +303,7 @@
 <body>
 <header class="site">
   <div class="logo">Prompt<span>Drawer</span></div>
-  <a href="#pricing" class="btn btn-ghost" style="font-size:0.85rem; padding:9px 16px;">Get the toolkit</a>
+  <a href="#contents" class="btn btn-ghost" style="font-size:0.85rem; padding:9px 16px;">See what is in it</a>
 </header>
 
 <main class="wrap">
@@ -260,130 +311,198 @@
   <section class="hero">
     <div class="hero-grid">
       <div>
-        <p class="eyebrow">AI Prompt Toolkit · For Solo & Small Businesses</p>
+        <p class="eyebrow">AI Prompt Toolkit &middot; For Solo and Small Businesses</p>
         <h1>Stop opening a blank chat window every time you need help running your business.</h1>
-        <p class="lead">50 ready-to-use AI prompts for the planning, marketing, sales, and admin work that eats a solo owner's week — built to paste into any AI chat and customize in seconds.</p>
+        <p class="lead">PromptDrawer is a written pack of AI prompts for the marketing, sales, content, customer, admin, money and hiring work that lands on one person - plus the days when you are simply stuck. Copy one into any AI chat, fill in the brackets, work from the answer.</p>
+<!-- BEGIN GENERATED:hero-ctas -->
         <div class="hero-ctas">
-          <a href="#capture" class="btn btn-primary">Get 8 free prompts</a>
-          <a href="#pricing" class="btn btn-ghost">See the full pack — $19</a>
+          <a href="#contents" class="btn btn-primary">Read all 50 prompts</a>
+          <a href="#availability" class="btn btn-ghost">Why nothing is for sale yet</a>
         </div>
+<!-- END GENERATED:hero-ctas -->
       </div>
-      <div class="prompt-card" aria-hidden="true">
-        <div class="dot-row"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-        <span class="tag">SALES & COMMUNICATION</span>
-        <p style="margin:0; color:#A9B3AE;">> Write a follow-up email to a prospect<br>&nbsp;&nbsp;who went quiet after our call. Keep it<br>&nbsp;&nbsp;short, no pressure, one clear next step<span class="cursor"></span></p>
+<!-- BEGIN GENERATED:hero-sample -->
+      <div class="prompt-card">
+        <div class="dot-row" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <span class="tag">MARKETING &amp; POSITIONING &middot; PROMPT 1 &middot; EXCERPT</span>
+        <p class="prompt-name">The One-Sentence Positioning Statement</p>
+        <p class="prompt-text">&gt; Help me write a one-sentence positioning statement for my business.<br>&gt; Here are the facts:<br>&gt; ...</p>
+        <p class="prompt-note">One prompt out of the pack, copied from its file and cut short here. Prompt 1 continues past those lines; the rest of the pack is listed below.</p>
       </div>
+<!-- END GENERATED:hero-sample -->
     </div>
   </section>
 
   <section class="problem">
     <div class="problem-box">
-      <p class="eyebrow" style="color:var(--accent);">The problem</p>
-      <p style="font-size:1.1rem; margin:0;">Running a business alone means being the marketer, the salesperson, the ops manager, and the bookkeeper — usually with no time to do any of it well. Generic AI prompts you find online are vague and need heavy rewriting before they're useful.</p>
+      <p class="eyebrow" style="color:var(--accent);">Why a pack</p>
+      <p style="font-size:1.1rem; margin:0;">Running a business alone means being the marketer, the salesperson, the ops manager and the bookkeeper, usually with no time to do any of it well. A one-line prompt you found in a list somewhere needs rewriting before it is any use. Every prompt here is written long on purpose: it carries the context, the constraints and the place for your own details, so what comes back is about your business rather than generic advice.</p>
     </div>
   </section>
 
+<!-- BEGIN GENERATED:drawers -->
   <section class="drawers-section">
     <h2 class="section-title">8 drawers, 50 prompts</h2>
-    <p class="section-sub">Organized by the actual jobs a solo business owner has to do — not a random grab-bag list.</p>
+    <p class="section-sub">Every prompt in the pack, grouped by the job it is for. The counts below are read from the pack files themselves.</p>
     <div class="drawers">
-      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Business Planning & Strategy</h3><p>Growth opportunities, trade-off decisions, SWOT.</p></div>
-      <div class="drawer"><span class="count">7 PROMPTS</span><h3>Marketing & Content</h3><p>Headlines, About pages, ad variations, blog ideas.</p></div>
-      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Sales & Customer Communication</h3><p>Follow-ups, proposals, objection handling.</p></div>
-      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Operations & Admin</h3><p>SOPs, checklists, hiring notes, meeting agendas.</p></div>
-      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Finance Basics & Pricing</h3><p>Pricing models, budgets, break-even estimates.</p></div>
-      <div class="drawer"><span class="count">7 PROMPTS</span><h3>Customer Support</h3><p>Replies, refund scripts, FAQ drafts.</p></div>
-      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Product & Offers</h3><p>Offer names, feature lists, upgrade paths.</p></div>
-      <div class="drawer"><span class="count">6 PROMPTS</span><h3>Mindset & Focus</h3><p>Weekly reviews, priority filters, decision frames.</p></div>
+      <div class="drawer"><span class="count">7 PROMPTS &middot; 1-7</span><h3>Marketing &amp; Positioning</h3><p>The jobs in this section decide whether people understand what you sell and why it matters to them.</p></div>
+      <div class="drawer"><span class="count">7 PROMPTS &middot; 8-14</span><h3>Sales &amp; Follow-Up</h3><p>Selling on your own is mostly answering messages quickly and following up on the ones that went quiet, without nagging anyone.</p></div>
+      <div class="drawer"><span class="count">7 PROMPTS &middot; 15-21</span><h3>Content &amp; Social</h3><p>Posting while running a business only works if it takes minutes, sounds like you, and does not require inventing anything.</p></div>
+      <div class="drawer"><span class="count">6 PROMPTS &middot; 22-27</span><h3>Customer Support &amp; Retention</h3><p>For a one-person business, support is not a department - it is you, mid-job, with a message you have to answer well.</p></div>
+      <div class="drawer"><span class="count">7 PROMPTS &middot; 28-34</span><h3>Operations &amp; Admin</h3><p>Admin is the work that expands to fill whatever time the real work leaves behind.</p></div>
+      <div class="drawer"><span class="count">6 PROMPTS &middot; 35-40</span><h3>Money &amp; Numbers</h3><p>None of these prompts give financial advice, do your bookkeeping or file anything - they help you get your own numbers into a shape you can make a decision with.</p></div>
+      <div class="drawer"><span class="count">5 PROMPTS &middot; 41-45</span><h3>Hiring &amp; Delegating</h3><p>The first person you bring in, or the first freelancer you use, changes how the business works.</p></div>
+      <div class="drawer"><span class="count">5 PROMPTS &middot; 46-50</span><h3>Getting Unstuck</h3><p>Every operator has a decision they keep putting off, a project that is too big to start, and a month they would rather not look at.</p></div>
     </div>
   </section>
+<!-- END GENERATED:drawers -->
 
   <section class="how">
     <h2 class="section-title">How it works</h2>
     <div class="steps">
       <div class="step"><span class="num">1</span><h3>Pick a prompt</h3><p>Open the category that matches the job in front of you.</p></div>
-      <div class="step"><span class="num">2</span><h3>Open any AI chat</h3><p>Works with ChatGPT, Claude, Gemini, or anything else.</p></div>
-      <div class="step"><span class="num">3</span><h3>Paste & fill in the brackets</h3><p>Swap in your specifics — takes seconds.</p></div>
-      <div class="step"><span class="num">4</span><h3>Use what comes back</h3><p>Edit to your voice, then ship it.</p></div>
+      <div class="step"><span class="num">2</span><h3>Open any AI chat</h3><p>Works with ChatGPT, Claude, Gemini or anything else that takes text.</p></div>
+      <div class="step"><span class="num">3</span><h3>Fill in the brackets</h3><p>Replace each [SQUARE BRACKET] with your own details.</p></div>
+      <div class="step"><span class="num">4</span><h3>Use what comes back</h3><p>Read it critically, edit it to your voice, then send it.</p></div>
     </div>
   </section>
 
-  <section id="capture" class="capture-section">
-    <div class="capture">
-      <div>
-        <p class="eyebrow">Free sample</p>
-        <h2 style="font-size:1.5rem;">8 of the 50 prompts, free</h2>
-        <p style="color:var(--muted); margin:6px 0 0;">Get a working sample sent to your inbox — no obligation to buy the rest.</p>
-      </div>
-      <form class="signup" id="fig-capture" novalidate><input type="email" name="email" id="fig-email" placeholder="you@business.com" required aria-label="Email address"><button type="submit" class="btn btn-primary">Send them to me</button><p id="fig-msg" role="status" aria-live="polite" style="margin:10px 0 0;font-size:.9rem;min-height:1.2em;"></p></form>
-    </div>
-  </section>
-
-  <section id="pricing">
-    <h2 class="section-title">Get the full pack</h2>
-    <div class="price-card">
-      <div>
-        <h3 style="color:var(--paper); font-size:1.2rem;">50 AI Prompts for Business Productivity</h3>
-        <ul>
-          <li>All 8 categories, 50 total prompts</li>
-          <li>Works with any AI chat tool</li>
-          <li>Lifetime access to future updates</li>
+<!-- BEGIN GENERATED:contents -->
+  <section id="contents" class="contents-section">
+    <h2 class="section-title">All 50 prompts, by name</h2>
+    <p class="section-sub">This is the full contents list of the pack, generated from the pack files. Nothing here arrives in a message and there is nothing to sign up for: the list is the whole preview.</p>
+    <div class="contents-grid">
+      <div class="contents-cat">
+        <h3><span class="count">7 PROMPTS</span>Marketing &amp; Positioning</h3>
+        <ul class="contents-list">
+          <li><span class="num">1</span>The One-Sentence Positioning Statement</li>
+          <li><span class="num">2</span>Who Is Actually Buying From Me</li>
+          <li><span class="num">3</span>Price Against The Three Real Alternatives</li>
+          <li><span class="num">4</span>Offer Teardown: Make It Easier To Say Yes To</li>
+          <li><span class="num">5</span>The Questions They Will Ask Before They Buy</li>
+          <li><span class="num">6</span>Where To Show Up With Two Hours A Week</li>
+          <li><span class="num">7</span>Turn What I Already Do Into A Productised Offer</li>
         </ul>
       </div>
-      <div class="buy-col">
-        <div class="price">$19 <small>one-time</small></div>
-        <br>
-        <!-- Stripe payment link -->
-        <a href="https://buy.stripe.com/cNi8wRbpy6M3cqbcRH0gw0c" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:10px;">Buy the pack &mdash; $19</a>
+      <div class="contents-cat">
+        <h3><span class="count">7 PROMPTS</span>Sales &amp; Follow-Up</h3>
+        <ul class="contents-list">
+          <li><span class="num">8</span>Reply To A New Enquiry While It Is Still Warm</li>
+          <li><span class="num">9</span>Qualify It Before You Spend An Hour On It</li>
+          <li><span class="num">10</span>The Three-Message Follow-Up That Is Not Nagging</li>
+          <li><span class="num">11</span>The One-Page Proposal</li>
+          <li><span class="num">12</span>Answer &quot;That&#x27;s Too Expensive&quot; Without Cutting Your Price</li>
+          <li><span class="num">13</span>Wake Up A Deal That Went Cold</li>
+          <li><span class="num">14</span>Turn One Finished Job Into The Next Three</li>
+        </ul>
       </div>
+      <div class="contents-cat">
+        <h3><span class="count">7 PROMPTS</span>Content &amp; Social</h3>
+        <ul class="contents-list">
+          <li><span class="num">15</span>One Customer Question Into Two Weeks Of Posts</li>
+          <li><span class="num">16</span>Make It Sound Like Me, Not Like A Robot</li>
+          <li><span class="num">17</span>Four Posts In One Sitting, Once A Week</li>
+          <li><span class="num">18</span>Turn A Job You Just Did Into A Story Without Exaggerating</li>
+          <li><span class="num">19</span>Answer A Comment Or Message That Needs Care</li>
+          <li><span class="num">20</span>Rewrite My Draft So It Actually Gets Read</li>
+          <li><span class="num">21</span>A Newsletter Issue In Ten Minutes</li>
+        </ul>
+      </div>
+      <div class="contents-cat">
+        <h3><span class="count">6 PROMPTS</span>Customer Support &amp; Retention</h3>
+        <ul class="contents-list">
+          <li><span class="num">22</span>Answer A Complaint Before It Escalates</li>
+          <li><span class="num">23</span>Say No Without Losing The Customer</li>
+          <li><span class="num">24</span>Check On A Customer Who Has Gone Quiet</li>
+          <li><span class="num">25</span>Write My Rules In Plain English</li>
+          <li><span class="num">26</span>Build My Saved Replies Library</li>
+          <li><span class="num">27</span>Ask For Feedback You Can Actually Use</li>
+        </ul>
+      </div>
+      <div class="contents-cat">
+        <h3><span class="count">7 PROMPTS</span>Operations &amp; Admin</h3>
+        <ul class="contents-list">
+          <li><span class="num">28</span>My Week On One Page</li>
+          <li><span class="num">29</span>Turn A Job I Repeat Into A Checklist</li>
+          <li><span class="num">30</span>Three Rules That Stop The Inbox Piling Up</li>
+          <li><span class="num">31</span>Decide What To Stop Doing</li>
+          <li><span class="num">32</span>Prep For A Conversation I Am Dreading</li>
+          <li><span class="num">33</span>A Thirty-Minute Weekly Review Worth Doing</li>
+          <li><span class="num">34</span>A Booking Flow That Writes Its Own Messages</li>
+        </ul>
+      </div>
+      <div class="contents-cat">
+        <h3><span class="count">6 PROMPTS</span>Money &amp; Numbers</h3>
+        <ul class="contents-list">
+          <li><span class="num">35</span>What An Hour Of My Time Has To Earn</li>
+          <li><span class="num">36</span>Price A New Service Without Guessing</li>
+          <li><span class="num">37</span>Which Costs To Cut First</li>
+          <li><span class="num">38</span>What I Owe And What Is Owed To Me</li>
+          <li><span class="num">39</span>Chase An Overdue Invoice In Three Steps</li>
+          <li><span class="num">40</span>Read My Numbers Back To Me In Plain English</li>
+        </ul>
+      </div>
+      <div class="contents-cat">
+        <h3><span class="count">5 PROMPTS</span>Hiring &amp; Delegating</h3>
+        <ul class="contents-list">
+          <li><span class="num">41</span>The Job Post For The Person I Actually Need</li>
+          <li><span class="num">42</span>Questions That Separate Talkers From Doers</li>
+          <li><span class="num">43</span>Hand It Over So It Does Not Come Back</li>
+          <li><span class="num">44</span>The First Week For Someone New</li>
+          <li><span class="num">45</span>Feedback That Actually Changes Something</li>
+        </ul>
+      </div>
+      <div class="contents-cat">
+        <h3><span class="count">5 PROMPTS</span>Getting Unstuck</h3>
+        <ul class="contents-list">
+          <li><span class="num">46</span>The Decision I Keep Putting Off</li>
+          <li><span class="num">47</span>Where Did The Week Actually Go</li>
+          <li><span class="num">48</span>Turn This Overwhelming Project Into This Week</li>
+          <li><span class="num">49</span>Plan For The Month That Goes Badly</li>
+          <li><span class="num">50</span>Argue Against My Own Plan</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+<!-- END GENERATED:contents -->
+
+  <section id="availability">
+    <h2 class="section-title">The pack is finished. Checkout is not open yet.</h2>
+    <p class="section-sub">PromptDrawer is written, validated and complete. It is also not on sale. Long's Holdings has not finished payments onboarding, so there is no working checkout for this pack and no way to pay for it today. Nothing on this page is for sale, and no button here will take your money.</p>
+    <div class="price-card">
+<!-- BEGIN GENERATED:pack-facts -->
+      <div>
+        <h3 style="color:var(--paper); font-size:1.2rem;">PromptDrawer - 50 AI prompts for solo and small-business operators</h3>
+        <ul>
+          <li>All 8 categories, 50 prompts, numbered 1-50</li>
+          <li>Each prompt carries a when-to-use line, a fill-in note for every placeholder, and a tip for what to do with the answer</li>
+          <li>Two files: <code>promptdrawer.md</code> (Markdown) and <code>promptdrawer.html</code> (print-ready)</li>
+          <li>Plain text, so it works with ChatGPT, Claude, Gemini, Copilot or any other assistant</li>
+        </ul>
+      </div>
+<!-- END GENERATED:pack-facts -->
+      <div class="buy-col">
+        <p class="price-label">Intended launch price</p>
+        <div class="price">$19 <small>one-time, not yet on sale</small></div>
+      </div>
+      <p class="sale-state"><strong>Checkout is not open yet.</strong> The $19 above is an intended launch price, not something you can pay today. When checkout opens this page will say so here, and the price you see then will be the price you pay. Until then there is no way to purchase PromptDrawer, and we would rather say that than show you a button that goes nowhere.</p>
     </div>
   </section>
 
   <section class="faq">
     <h2 class="section-title">Questions</h2>
-    <div class="faq-item"><h3>Do I need a specific AI tool?</h3><p>No — every prompt works with ChatGPT, Claude, Gemini, or any chatbot that takes text input.</p></div>
-    <div class="faq-item"><h3>Is this a subscription?</h3><p>No. One-time payment, yours to keep.</p></div>
-    <div class="faq-item"><h3>How do I get the prompts after buying?</h3><p>You'll receive them by email right after payment. Contact longsholdingsllc@gmail.com if anything is missing.</p></div>
+    <div class="faq-item"><h3>Do I need a specific AI tool?</h3><p>No. Every prompt is plain text you paste into ChatGPT, Claude, Gemini, Copilot or any other assistant that gives you a text box.</p></div>
+    <div class="faq-item"><h3>Can I buy it today?</h3><p>No. Checkout is not open yet, so there is no way to pay for the pack today and we cannot take a payment of any kind. The pack itself is finished and the contents on this page are the real thing.</p></div>
+    <div class="faq-item"><h3>Is there a sample I can look at before deciding?</h3><p>Yes, and it is on this page rather than in a message from us: every prompt title in the pack is listed above, with the category it sits in, and one real prompt is shown in full up to its first few lines. We have no email system, so we cannot send anything anywhere or take an address from you to send it to. The list is the preview.</p></div>
+    <div class="faq-item"><h3>What will a buyer receive?</h3><p>Two files that are already written: <code>promptdrawer.md</code>, the whole pack as Markdown, and <code>promptdrawer.html</code>, the same pack as a print-ready page you can print or save as a PDF. It is not software, not a subscription and not a course, and it does not connect to any of your accounts. Nothing needs installing and there is no app or account to create.</p></div>
+    <div class="faq-item"><h3>Is this a subscription?</h3><p>The intention is a single one-time payment at the intended launch price of $19, not a subscription. Nothing is charged today, because checkout is not open.</p></div>
+    <div class="faq-item"><h3>Who publishes it?</h3><p>PromptDrawer is a product of Long's Holdings LLC. It is the first product this company has written, nobody has bought it yet, and there are no customers or figures we could point to. We would rather say that than dress it up.</p></div>
   </section>
 
 </main>
 
 <footer>
-  <div class="wrap">PromptDrawer · Long's Holdings LLC · <a href="mailto:longsholdingsllc@gmail.com">longsholdingsllc@gmail.com</a></div>
+  <div class="wrap">PromptDrawer &middot; a product of Long's Holdings LLC &middot; Checkout is not open yet - nothing on this page is for sale.</div>
 </footer>
-
-<script>
-(function () {
-  var SUPA = 'https://placeholder.supabase.co';
-  var KEY = 'placeholder';
-  var f = document.getElementById('fig-capture');
-  var msg = document.getElementById('fig-msg');
-  if (f) {
-    f.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var em = document.getElementById('fig-email').value.trim();
-      if (!em || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {
-        msg.style.color = '#b3261e'; msg.textContent = 'Please enter a valid email.'; return;
-      }
-      msg.style.color = ''; msg.textContent = 'Sending...';
-      fetch(SUPA + '/rest/v1/leads', {
-        method: 'POST',
-        headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY,
-                   'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ email: em, source: 'ai-prompts-landing' })
-      }).then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        msg.style.color = '#1a7f37';
-        msg.textContent = 'Done - check your inbox for the 8 free prompts.';
-        f.reset();
-        if (window.posthog) window.posthog.capture('lead_captured', { source: 'ai-prompts-landing' });
-      }).catch(function () {
-        msg.style.color = '#b3261e';
-        msg.textContent = 'Something went wrong. Email longsholdingsllc@gmail.com and I will send them directly.';
-      });
-    });
-  }
-})();
-</script>
 </body>
 </html>

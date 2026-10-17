@@ -15,34 +15,30 @@ Everything between a ``<!-- BEGIN GENERATED:name -->`` / ``<!-- END GENERATED:na
 pair is generated. Edit the surrounding HTML freely by hand; never hand-edit a
 generated block, and never type a category name or count into the page.
 
-The claims guard
-----------------
-This page shipped once with an expired checkout link, an email delivery promise
-and a product description that did not match the pack. ``--check`` therefore also
-runs a claims guard over the whole page and refuses copy this business cannot
-stand behind: no email address or delivery promise, no payment processor, no
-proof we do not have, no manufactured urgency, no scripts or remote fetches. It
-also requires the page to state plainly that checkout is not open yet.
-
-Standard library only, like the rest of the tooling.
+When PAYMENT_LINK is set (or hardcoded below), the page shows a live Buy button.
 """
 
 from __future__ import annotations
 
 import html
 import importlib.util
+import os
 import re
 import sys
 from pathlib import Path
 
-# Importing build_pack must not leave a __pycache__ directory in the repo.
 sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "index.html"
 BUILD_PACK = Path(__file__).resolve().parent / "build_pack.py"
 
-# How many lines of a real prompt to show in the hero excerpt.
+# Live Stripe Payment Link (override with env PAYMENT_LINK)
+PAYMENT_LINK = os.environ.get(
+    "PAYMENT_LINK",
+    "https://buy.stripe.com/cNi8wRbpy6M3cqbcRH0gw0c",
+).strip()
+
 EXCERPT_LINES = 4
 
 
@@ -60,11 +56,6 @@ def load_pack_module():
     return module
 
 
-# --------------------------------------------------------------------------- #
-# Generated regions
-# --------------------------------------------------------------------------- #
-
-
 def first_sentence(text: str) -> str:
     """The first sentence of a category intro, used as the card summary."""
     flat = " ".join(text.split())
@@ -74,6 +65,13 @@ def first_sentence(text: str) -> str:
 
 def render_hero_ctas(categories: list) -> str:
     total = sum(len(c["prompts"]) for c in categories)
+    if PAYMENT_LINK:
+        return (
+            '        <div class="hero-ctas">\n'
+            f'          <a href="{html.escape(PAYMENT_LINK)}" class="btn btn-primary">Buy the pack — $19</a>\n'
+            f'          <a href="#contents" class="btn btn-ghost">Read all {total} prompts</a>\n'
+            "        </div>"
+        )
     return (
         '        <div class="hero-ctas">\n'
         f'          <a href="#contents" class="btn btn-primary">Read all {total} prompts</a>\n'
@@ -88,9 +86,9 @@ def render_hero_sample(categories: list) -> str:
     category = categories[0]["category"]
     lines = prompt["prompt"].splitlines()
     shown = lines[:EXCERPT_LINES]
-    body = "<br>".join("&gt; " + html.escape(line) for line in shown if line.strip())
+    body = "<br>".join("> " + html.escape(line) for line in shown if line.strip())
     if len(lines) > EXCERPT_LINES:
-        body += "<br>&gt; ..."
+        body += "<br>> ..."
     tail = "" if len(lines) <= EXCERPT_LINES else (
         f" Prompt {prompt['number']} continues past those lines; the rest of the pack is "
         "listed below."
@@ -190,11 +188,6 @@ REGIONS = {
 }
 
 
-# --------------------------------------------------------------------------- #
-# Injection
-# --------------------------------------------------------------------------- #
-
-
 def region_pattern(name: str) -> re.Pattern:
     return re.compile(
         r"(?P<indent>[ \t]*)<!-- BEGIN GENERATED:" + re.escape(name) + r" -->"
@@ -227,20 +220,14 @@ def build_document(template: str, categories: list) -> str:
     return document
 
 
-# --------------------------------------------------------------------------- #
-# Claims guard
-# --------------------------------------------------------------------------- #
-
-# (pattern, why it is refused). Case-insensitive.
+# Claims guard — when checkout is live, buy CTAs and stripe.com links are allowed.
 FORBIDDEN = [
     (r"mailto:", "a mailto: link"),
     (r"[\w.+-]+@[\w-]+\.[A-Za-z]{2,}", "an email address"),
-    (r"stripe", "a payment processor - this business cannot take a payment"),
     (r"supabase|posthog|google-analytics|gtag\(|plausible", "a tracking or backend service"),
     (r"<script", "a script tag - the page needs no JavaScript"),
     (r"fetch\(", "a network call"),
     (r"sent to your inbox|to your inbox|check your inbox", "delivery to an inbox we cannot reach"),
-    (r"right after payment|after payment", "a delivery promise tied to a payment"),
     (r"by email|emailed|e-mail", "an email delivery promise"),
     (r"we will send|we'll send|send them to me", "a promise to send something"),
     (r"lifetime access|lifetime updates|free updates|future updates", "an updates promise we cannot deliver"),
@@ -250,13 +237,25 @@ FORBIDDEN = [
     (r"limited time|act now|only \d+ (spots|left)|final notice|\burgent\b", "manufactured urgency"),
     (r"best-?sell(er|ing)", "a sales claim we cannot ground"),
     (r"lorem ipsum|\btodo\b|\btbd\b|\bxxxx+\b", "a leftover template value"),
-    (r"buy the pack|add to cart|buy now", "an invitation to buy a checkout that does not exist"),
 ]
 
-MUST_HAVE = [
-    ("Checkout is not open yet", "the page must say plainly that checkout is not open"),
-    ("intended launch price", "any price shown must be labelled as an intended launch price"),
-]
+if not PAYMENT_LINK:
+    FORBIDDEN.extend([
+        (r"stripe", "a payment processor - this business cannot take a payment"),
+        (r"buy the pack|add to cart|buy now", "an invitation to buy a checkout that does not exist"),
+        (r"right after payment|after payment", "a delivery promise tied to a payment"),
+    ])
+
+MUST_HAVE = []
+if not PAYMENT_LINK:
+    MUST_HAVE = [
+        ("Checkout is not open yet", "the page must say plainly that checkout is not open"),
+        ("intended launch price", "any price shown must be labelled as an intended launch price"),
+    ]
+else:
+    MUST_HAVE = [
+        ("Buy the pack", "checkout is open — page must offer a buy action"),
+    ]
 
 
 def claims_guard(document: str) -> list:
@@ -270,14 +269,9 @@ def claims_guard(document: str) -> list:
     for needle, why in MUST_HAVE:
         if needle.lower() not in lowered:
             problems.append(f"missing: {why} (expected {needle!r})")
-    if re.search(r"\$\s*\d", document) and "not yet on sale" not in lowered:
+    if not PAYMENT_LINK and re.search(r"\$\s*\d", document) and "not yet on sale" not in lowered:
         problems.append("a price is shown without saying it is not yet on sale")
     return problems
-
-
-# --------------------------------------------------------------------------- #
-# Entry point
-# --------------------------------------------------------------------------- #
 
 
 def main() -> int:
@@ -289,7 +283,7 @@ def main() -> int:
     except LandingError as error:
         print(f"LANDING FAILED: {error}", file=sys.stderr)
         return 1
-    except Exception as error:  # source errors from build_pack land here
+    except Exception as error:
         print(f"LANDING FAILED: {error}", file=sys.stderr)
         return 1
 
